@@ -16,7 +16,7 @@ $app->group('/users', function () {
      * GET
      */
     $this->get(
-        '/{name:.*}',
+        '/{id:.*}',
         function (
             $request,
             $response,
@@ -25,9 +25,9 @@ $app->group('/users', function () {
             $db = $this->get('db.get');
             $sql = 'select * from `users`';
 
-            if ($args['name']) {
-                $sql .= ' WHERE `name` = ?;';
-                $body = $db->execute($sql, $args['name']);
+            if ($args['id']) {
+                $sql .= ' WHERE `id` = ?;';
+                $body = $db->execute($sql, $args['id']);
             } else {
                 $body = $db->execute($sql);
             }
