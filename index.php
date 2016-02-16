@@ -23,8 +23,8 @@ require($file . $ext);
 /**
  * detect debug mode
  */
-const DEBUG = DEBUG_DEFAULT;
-//const DEBUG = true;
+//const DEBUG = DEBUG_DEFAULT;
+const DEBUG = true;
 ini_set('display_errors', DEBUG);
 
 /**
