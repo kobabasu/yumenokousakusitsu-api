@@ -15,7 +15,7 @@ $production_server_ips = array(
 );
 
 $env = new DetectEnvironment($production_server_ips);
-$env->setMode = 'proxies';
+$env->setMode('proxies');
 $file = __DIR__ . '/config/' . $env->getName();
 $ext = (is_file($file . '.php')) ? '.php' : '.php.sample';
 require($file . $ext);
