@@ -29,8 +29,8 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(24) NOT NULL,
-  `approved` TINY_INT(1) NOT NULL DEFAULT 1,
-  `path` TINY_INT(1) NOT NULL,
-  `posted` VARCHAR(96) NOT NULL,
+  `approved` TINYINT UNSIGNED NOT NULL DEFAULT 1,
+  `path` VARCHAR(96) NOT NULL,
+  `posted` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
 );
