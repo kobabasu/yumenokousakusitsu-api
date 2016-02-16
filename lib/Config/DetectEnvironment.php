@@ -20,6 +20,9 @@ class DetectEnvironment
     /** 本番環境の名前 */
     const PRODUCTION  = 'production';
 
+    /** @var Boolean $ips 与えられたips */
+    public $ips = null;
+
     /** @var Boolean $flag productionであればtrue */
     public $flag = false;
 
@@ -37,7 +40,8 @@ class DetectEnvironment
      */
     public function __construct($ips)
     {
-        $this->flag = $this->checkIps((array)$ips);
+        $this->ips = (array)$ips;
+        $this->flag = $this->checkIps();
     }
 
     /**
@@ -46,12 +50,12 @@ class DetectEnvironment
      * @param Array $ips
      * @return Boolean
      */
-    public function checkIps(array $ips)
+    public function checkIps()
     {
         $flag = false;
         $serverAddr = $this->getServerAddr();
 
-        foreach ($ips as $val) {
+        foreach ($this->ips as $val) {
             if ($serverAddr == $this->checkIp($val)) {
                 $flag = true;
             }
@@ -100,7 +104,7 @@ class DetectEnvironment
      */
     public function evalProduction()
     {
-        return $this->flag;
+        return $this->checkIps();
     }
 
     /**
@@ -110,7 +114,7 @@ class DetectEnvironment
      */
     public function evalDevelopment()
     {
-        return !$this->flag;
+        return !$this->checkIps();
     }
 
     /**
@@ -121,7 +125,7 @@ class DetectEnvironment
     public function getName()
     {
         $res = self::DEVELOPMENT;
-        if ($this->flag) {
+        if ($this->checkIps()) {
             $res = self::PRODUCTION;
         }
 
