@@ -7,7 +7,7 @@ use \Slim\Middleware\HttpBasicAuthentication;
 
 // e.g: $app->add(enw \Slim\Csrf\Guard);
 
-$c = $app->getContainer();
+// $c = $app->getContainer();
 
 /**
  * tuupola/slim-basic-auth
