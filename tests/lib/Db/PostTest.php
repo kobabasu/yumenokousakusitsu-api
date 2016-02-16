@@ -32,9 +32,9 @@ class PostTest extends DbTest
      */
     public function testExecuteNormal()
     {
-        $sql = 'INSERT INTO `users` (`name`,`email`) ';
-        $sql .= 'VALUES (?,?);';
-        $values = array('maro', 'maro@example.com');
+        $sql = 'INSERT INTO `users` (`name`,`approved`, `path`, `posted`) ';
+        $sql .= 'VALUES (?,?,?,?);';
+        $values = array('モロッコくん', 1, '20160301-123024.png', '2016-03-01 12:30:24');
 
         $res = $this->object->execute($sql, $values);
 
