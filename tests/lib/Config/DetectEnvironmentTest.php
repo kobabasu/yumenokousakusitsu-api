@@ -57,7 +57,7 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * SERVER_ADDRと与えられたIPが一致すればtrueを返すか
+     * 正常系 SERVER_ADDRと与えられたIPが一致すればtrueを返すか
      *
      * @covers Lib\Config\DetectEnvironment::__construct()
      * @test testConstruct()
@@ -68,7 +68,7 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * SERVER_ADDRと与えられたIPが一致すればtrueを返すか
+     * 正常系 SERVER_ADDRと与えられたIPが一致すればtrueを返すか
      *
      * @covers Lib\Config\DetectEnvironment::checkIps()
      * @test testCheckIps()
@@ -83,7 +83,7 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * SERVER_ADDRが取得出来なかった場合nullを返すか
+     * 異常系例外 SERVER_ADDRが取得出来なかった場合nullを返すか
      *
      * @covers Lib\Config\DetectEnvironment::getServerAddr()
      * @test testGetServerAddr()
@@ -101,7 +101,7 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * host名がlocalhost以外はnullであるか
+     * 異常系エラー host名がlocalhostの場合nullを返すか
      *
      * @covers Lib\Config\DetectEnvironment::checkIp()
      * @test testCheckIp() Host
@@ -111,11 +111,11 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
         $addr = 'localhost';
         $res = $this->object->checkIp($addr);
 
-        $this->assertEquals('localhost', $res);
+        $this->assertNull($res);
     }
 
     /**
-     * 正しいIP以外はnullであるか
+     * 異常系エラー 正しいIP以外はnullであるか
      *
      * @covers Lib\Config\DetectEnvironment::checkIp()
      * @test testCheckIp() Ip
@@ -129,7 +129,7 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * productionはtrueか
+     * 正常系 productionはtrueか
      *
      * @covers Lib\Config\DetectEnvironment::evalProduction()
      * @test testEvalProduction()
@@ -141,7 +141,7 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * developmentはfalseか
+     * 正常系 developmentはfalseか
      *
      * @covers Lib\Config\DetectEnvironment::evalDevelopment()
      * @test testEvalDevelopment()
@@ -153,7 +153,7 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * getNameはproductionを返す
+     * 正常系 getNameはproductionを返す
      *
      * @covers Lib\Config\DetectEnvironment::getName()
      * @test testGetName()
@@ -162,5 +162,61 @@ class DetectEnvironmentTest extends \PHPUnit_Framework_TestCase
     {
         $res = $this->object->getName();
         $this->assertEquals($res, 'production');
+    }
+
+    /**
+     * 正常系 setModeが正しく$this->modeにセットされるか
+     *
+     * @covers Lib\Config\DetectEnvironment::setMode()
+     * @test testNormalSetMode()
+     */
+    public function testNormalSetMode()
+    {
+        $class = new \ReflectionClass($this->object);
+        $ref = $class->getProperty('mode');
+        $ref->setAccessible(true);
+        $this->object->setMode('anonymous');
+        $res = $ref->getValue($this->object);
+
+        $this->assertEquals('anonymous', $res);
+    }
+
+    /**
+     * 正常系 convertIpが正しくIPを返すか
+     *
+     * @covers Lib\Config\DetectEnvironment::convertIp()
+     * @test testNormalConvertIp()
+     */
+    public function testNormalConvertIp()
+    {
+        $ref = new \ReflectionClass($this->object);
+        $method = $ref->getMethod('convertIp');
+        $method->setAccessible(true);
+        $res = $method->invokeArgs(
+            $this->object,
+            array('192.168.0.1')
+        );
+
+        $this->assertEquals('192.168.0.1', $res);
+    }
+
+    /**
+     * 正常系 convertIpが正しくIPを返すか
+     *
+     * @covers Lib\Config\DetectEnvironment::convertIp()
+     * @test testNormalConvertIpProxies()
+     */
+    public function testNormalConvertIpProxies()
+    {
+        $ref = new \ReflectionClass($this->object);
+        $method = $ref->getMethod('convertIp');
+        $method->setAccessible(true);
+        $this->object->setMode('proxies');
+        $res = $method->invokeArgs(
+            $this->object,
+            array('192.168.0.1')
+        );
+
+        $this->assertEquals('192.168.0', $res);
     }
 }

@@ -14,13 +14,18 @@ namespace Lib\Config;
  */
 class DetectEnvironment
 {
+    /** 開発環境の名前 */
     const DEVELOPMENT = 'development';
+
+    /** 本番環境の名前 */
     const PRODUCTION  = 'production';
 
-    /**
-     * productionであればtrue
-     */
+    /** @var Boolean $flag productionであればtrue */
     public $flag = false;
+
+    /** @var String $mode proxiesはIPの3つまでで判断 */
+    private $mode = 'proxie';
+
 
     /**
      * 与えられた引数をcheckIps()にかけ結果を返す
@@ -32,7 +37,7 @@ class DetectEnvironment
      */
     public function __construct($ips)
     {
-        $this->flag = $this->checkIps((Array)$ips);
+        $this->flag = $this->checkIps((array)$ips);
     }
 
     /**
@@ -41,7 +46,7 @@ class DetectEnvironment
      * @param Array $ips
      * @return Boolean
      */
-    public function checkIps(Array $ips)
+    public function checkIps(array $ips)
     {
         $flag = false;
         $serverAddr = $this->getServerAddr();
@@ -68,7 +73,7 @@ class DetectEnvironment
             $res = $this->checkIp($_SERVER['SERVER_ADDR']);
         }
 
-        return $res;
+        return $this->convertIp($res);
     }
 
     /**
@@ -85,11 +90,7 @@ class DetectEnvironment
             $res = $addr;
         }
 
-        if ($addr == 'localhost') {
-            $res = $addr;
-        }
-
-        return $res;
+        return $this->convertIp($res);
     }
 
     /**
@@ -125,5 +126,34 @@ class DetectEnvironment
         }
 
         return $res;
+    }
+
+    /**
+     * $modeをset
+     *
+     * @param String $mode
+     * @return void
+     * @codeCoverageIgnore
+     */
+    public function setMode($mode)
+    {
+        $this->mode = $mode;
+    }
+
+    /**
+     * IPのネットワークIDのみ返す
+     *
+     * @param String $ip
+     * @return String
+     */
+    private function convertIp($ip)
+    {
+        if ($this->mode == 'proxies') {
+            $pattern = '/^([0-9]+\.[0-9]+\.[0-9]+)/';
+            preg_match($pattern, $ip, $match);
+            $ip = array_shift($match);
+        }
+
+        return $ip;
     }
 }
