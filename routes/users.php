@@ -58,7 +58,8 @@ $app->group('/users', function () {
             $limit = 15;
             $offset = $limit * ($page - 1);
 
-            $sql = 'SELECT * FROM `users` LIMIT ';
+            $sql = 'SELECT * FROM `users` ';
+            $sql .= 'WHERE `approved` = 1 LIMIT ';
             $sql .= (int)$offset . ', ' . (int)$limit . ';';
             $body = $db->execute($sql);
 
