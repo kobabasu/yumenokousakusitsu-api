@@ -50,13 +50,6 @@ frisby.create(
       approved: '1',
       path: '20160215-012544.png',
       posted: '2016-02-15 01:25:44'
-    },
-    {
-      id: '2',
-      name: 'うさ子',
-      approved: '0',
-      path: '20160215-012544.png',
-      posted: '2016-02-15 01:25:44'
     }
   ])
   .toss();
@@ -79,13 +72,6 @@ frisby.create(
       approved: '1',
       path: '20160215-012544.png',
       posted: '2016-02-15 01:25:44'
-    },
-    {
-      id: '2',
-      name: 'うさ子',
-      approved: '0',
-      path: '20160215-012544.png',
-      posted: '2016-02-15 01:25:44'
     }
   ])
   .toss();
@@ -106,13 +92,6 @@ frisby.create(
       id: '1',
       name: 'ニックちゃん',
       approved: '1',
-      path: '20160215-012544.png',
-      posted: '2016-02-15 01:25:44'
-    },
-    {
-      id: '2',
-      name: 'うさ子',
-      approved: '0',
       path: '20160215-012544.png',
       posted: '2016-02-15 01:25:44'
     }

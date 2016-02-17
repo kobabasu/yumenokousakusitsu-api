@@ -99,13 +99,6 @@ class UsersTest extends AppMock
                 'approved' => '1',
                 'path' => '20160215-012544.png',
                 'posted' => '2016-02-15 01:25:44'
-            ),
-            array(
-                'id' => '2',
-                'name' => 'うさ子',
-                'approved' => '0',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
             )
         );
 
@@ -133,13 +126,6 @@ class UsersTest extends AppMock
                 'approved' => '1',
                 'path' => '20160215-012544.png',
                 'posted' => '2016-02-15 01:25:44'
-            ),
-            array(
-                'id' => '2',
-                'name' => 'うさ子',
-                'approved' => '0',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
             )
         );
 
@@ -165,13 +151,6 @@ class UsersTest extends AppMock
                 'id' => '1',
                 'name' => 'ニックちゃん',
                 'approved' => '1',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
-            ),
-            array(
-                'id' => '2',
-                'name' => 'うさ子',
-                'approved' => '0',
                 'path' => '20160215-012544.png',
                 'posted' => '2016-02-15 01:25:44'
             )
