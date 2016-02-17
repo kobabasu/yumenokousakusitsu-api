@@ -16,7 +16,7 @@ $app->group('/users', function () {
      * GET
      */
     $this->get(
-        '/{id:.*}',
+        '/{id:[0-9]*}',
         function (
             $request,
             $response,
@@ -31,6 +31,36 @@ $app->group('/users', function () {
             } else {
                 $body = $db->execute($sql);
             }
+
+            return $response->withJson(
+                $body,
+                200,
+                $this->get('settings')['withJsonEnc']
+            );
+        }
+    );
+
+    /** /users/pages/ */
+    $this->get(
+        '/pages/{page:[0-9]*}',
+        function (
+            $request,
+            $response,
+            $args
+        ) {
+            $db = $this->get('db.get');
+
+            $page = 1;
+            if ($args['page'] > 0) {
+                $page = $args['page'];
+            }
+
+            $limit = 15;
+            $offset = $limit * ($page - 1);
+
+            $sql = 'SELECT * FROM `users` LIMIT ';
+            $sql .= (int)$offset . ', ' . (int)$limit . ';';
+            $body = $db->execute($sql);
 
             return $response->withJson(
                 $body,

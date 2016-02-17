@@ -36,7 +36,7 @@
 
   # BASIC AUTH for PHP-CGI
   # RewriteCond %{HTTP:Authorization} ^(.*)
-  # RewriteRule ^(.*) – [E=HTTP_AUTHORIZATION:%1]
+  # RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
