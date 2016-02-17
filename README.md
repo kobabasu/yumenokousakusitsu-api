@@ -70,11 +70,14 @@ originと整合性が取れない場合があったため、
 1. `composer install --no-dev`
 
 ### .htaccess
-1. ローカル環境用の.htaccessを作成
+再びサーバへ
+
 1. `cp .htaccess.sample .htaccess`
 1. `cp .logs/htaccess.sample logs/.htaccess`
 1. `cp .reports/htaccess.sample reports/.htaccess`
-1. 本番用のコードをコメント
+1. HTTPSが使える場合はHTTPS正規化の設定を有効に
+1. BASIC認証をかける場合にはBASIC認証設定を有効にしパスを変更
+1. サーバがPHP-CGI版の場合にはPHP-CGI用のBASIC認証設定を有効に
 
 ### .htpasswd
 変更する場合のみ以下を実行
@@ -195,7 +198,10 @@ CPIでの例
 1. `cp .htaccess.sample .htaccess`
 1. `cp .logs/htaccess.sample logs/.htaccess`
 1. `cp .reports/htaccess.sample reports/.htaccess`
-1. 本番用のコードにする
+1. HTTPSが使える場合はHTTPS正規化の設定を有効に
+1. BASIC認証をかける場合にはBASIC認証設定を有効にしパスを変更
+1. サーバがPHP-CGI版の場合にはPHP-CGI用のBASIC認証設定を有効に
+1. サーバがCPIで会った場合にはCPI特有の記述を有効に
 
 ### .htpasswd
 1. `htpasswd -m .htpasswd api`
