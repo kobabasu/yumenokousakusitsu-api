@@ -16,7 +16,7 @@ $app->group('/users', function () {
      * GET
      */
     $this->get(
-        '/{id:.*}',
+        '/{id:[0-9]*}',
         function (
             $request,
             $response,
