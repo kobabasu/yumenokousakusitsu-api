@@ -59,7 +59,8 @@ $app->group('/users', function () {
             $offset = $limit * ($page - 1);
 
             $sql = 'SELECT * FROM `users` ';
-            $sql .= 'WHERE `approved` = 1 LIMIT ';
+            $sql .= 'WHERE `approved` = 1 ';
+            $sql .= 'ORDER BY `posted` DESC LIMIT ';
             $sql .= (int)$offset . ', ' . (int)$limit . ';';
             $pages = $db->execute($sql);
 
