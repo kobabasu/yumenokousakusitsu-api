@@ -93,20 +93,17 @@ class UsersTest extends AppMock
         $resOut = $this->invoke($app);
 
         $expect = array(
-            array(
-                'id' => '1',
-                'name' => 'ニックちゃん',
-                'approved' => '1',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
+            'pages' => array(
+                array(
+                    'id' => '1',
+                    'name' => 'ニックちゃん',
+                    'approved' => '1',
+                    'path' => '20160215-012544.png',
+                    'posted' => '2016-02-15 01:25:44'
+                )
             ),
-            array(
-                'id' => '2',
-                'name' => 'うさ子',
-                'approved' => '0',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
-            )
+            'limit' => 15,
+            'total' => 1
         );
 
         $this->assertEquals(
@@ -127,20 +124,17 @@ class UsersTest extends AppMock
         $resOut = $this->invoke($app);
 
         $expect = array(
-            array(
-                'id' => '1',
-                'name' => 'ニックちゃん',
-                'approved' => '1',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
+            'pages' => array(
+                array(
+                    'id' => '1',
+                    'name' => 'ニックちゃん',
+                    'approved' => '1',
+                    'path' => '20160215-012544.png',
+                    'posted' => '2016-02-15 01:25:44'
+                )
             ),
-            array(
-                'id' => '2',
-                'name' => 'うさ子',
-                'approved' => '0',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
-            )
+            'limit' => 15,
+            'total' => 1
         );
 
         $this->assertEquals(
@@ -161,20 +155,17 @@ class UsersTest extends AppMock
         $resOut = $this->invoke($app);
 
         $expect = array(
-            array(
-                'id' => '1',
-                'name' => 'ニックちゃん',
-                'approved' => '1',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
+            'pages' => array(
+                array(
+                    'id' => '1',
+                    'name' => 'ニックちゃん',
+                    'approved' => '1',
+                    'path' => '20160215-012544.png',
+                    'posted' => '2016-02-15 01:25:44'
+                )
             ),
-            array(
-                'id' => '2',
-                'name' => 'うさ子',
-                'approved' => '0',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
-            )
+            'limit' => 15,
+            'total' => 1
         );
 
         $this->assertEquals(
@@ -194,7 +185,12 @@ class UsersTest extends AppMock
         require $this->filename;
         $resOut = $this->invoke($app);
 
-        $expect = array();
+        $expect = array(
+            'pages' => array(
+            ),
+            'limit' => 15,
+            'total' => 1
+        );
 
         $this->assertEquals(
             json_encode($expect),
@@ -227,10 +223,10 @@ class UsersTest extends AppMock
     public function testUsersPostNormal()
     {
         $req = array(
-                'name' => 'モロッコくん',
-                'approved' => '1',
-                'path' => '20160215-012544.png',
-                'posted' => '2016-02-15 01:25:44'
+            'name' => 'モロッコくん',
+            'approved' => '1',
+            'path' => '20160215-012544.png',
+            'posted' => '2016-02-15 01:25:44'
         );
         $this->setRequestBody(json_encode($req));
 
