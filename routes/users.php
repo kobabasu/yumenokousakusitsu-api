@@ -55,13 +55,21 @@ $app->group('/users', function () {
                 $page = $args['page'];
             }
 
-            $limit = 15;
+            $limit = 1;
             $offset = $limit * ($page - 1);
 
             $sql = 'SELECT * FROM `users` ';
             $sql .= 'WHERE `approved` = 1 LIMIT ';
             $sql .= (int)$offset . ', ' . (int)$limit . ';';
-            $body = $db->execute($sql);
+            $pages = $db->execute($sql);
+
+            $sql = 'SELECT COUNT(*) AS `total` FROM `users`;';
+            $total = $db->execute($sql);
+
+            $body = array(
+                'pages' => $pages,
+                'total' => (int)array_shift($total)->total
+            );
 
             return $response->withJson(
                 $body,
