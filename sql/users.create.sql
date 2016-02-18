@@ -15,7 +15,7 @@ INSERT INTO `users` (
   `id`,
   `name`,
   `approved`,
-  `PATH`,
+  `path`,
   `posted`
 ) VALUES
 (1, 'ニックちゃん', 1, '20160215-012544.png', '2016-02-15 01:25:44'),
