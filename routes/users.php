@@ -55,7 +55,7 @@ $app->group('/users', function () {
                 $page = $args['page'];
             }
 
-            $limit = 1;
+            $limit = 15;
             $offset = $limit * ($page - 1);
 
             $sql = 'SELECT * FROM `users` ';
@@ -63,11 +63,13 @@ $app->group('/users', function () {
             $sql .= (int)$offset . ', ' . (int)$limit . ';';
             $pages = $db->execute($sql);
 
-            $sql = 'SELECT COUNT(*) AS `total` FROM `users`;';
+            $sql = 'SELECT COUNT(*) AS `total` FROM `users` ';
+            $sql .= 'WHERE `approved` = 1;';
             $total = $db->execute($sql);
 
             $body = array(
                 'pages' => $pages,
+                'limit' => (int)$limit,
                 'total' => (int)array_shift($total)->total
             );
 
