@@ -85,7 +85,7 @@ $app->group('/users', function () {
             $image = imagecreatefromstring($base64);
 
             $path = '../drawing/upload/';
-            $filename = date('Ymd_his');
+            $filename = date('Ymd_His');
             $master = $path . $filename . '.png';
             $thumb = $path . $filename . '_s.jpg';
 
@@ -104,7 +104,7 @@ $app->group('/users', function () {
                 $body['name'],
                 $body['approved'],
                 $filename,
-                date('Y-m-d h:i:s')
+                date('Y-m-d H:i:s')
             );
 
             $db->execute($sql, $values);
