@@ -93,19 +93,19 @@ $app->group('/users', function () {
 
             $db = $this->get('db.post');
 
-            /*
             $sql  = 'INSERT INTO `users` ';
+            $sql .= '(`name`, `approved`, `path`, `posted`) ';
+            $sql .= 'VALUES ';
+            $sql .= '(?, ?, ?, ?);';
 
-            $fields = array_keys($body);
-            $values = array_values($body);
-            $holder = array_fill(0, count($values), '?');
-
-            $sql .= '(' . implode(', ', $fields) . ')';
-            $sql .= ' VALUES ';
-            $sql .= '(' . implode(', ', $holder) . ')';
+            $values = array(
+                $body['name'],
+                $body['approved'],
+                $filename,
+                date('Y-m-d h:i:s')
+            );
 
             $db->execute($sql, $values);
-             */
 
             return $response->withJson(
                 $body,
