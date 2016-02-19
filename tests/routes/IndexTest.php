@@ -8,7 +8,7 @@
 namespace Routes;
 
 /**
- * Dbクラス用のテストファイル
+ * routes/index.php用のテストファイル
  *
  * @package Routes
  */

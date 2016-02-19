@@ -32,28 +32,6 @@ frisby.create(
   ])
   .toss();
 
-/* GET '/users/pages/2' */
-frisby.create(
-    "正常系 '/users/pages/2'で空を返すか"
-  )
-  .get(HOST + MODEL + 'pages/2')
-  .auth('api', 'api012')
-  .expectStatus(200)
-  .expectHeader(
-    'Content-Type',
-    'application/json;charset=utf-8'
-  )
-  .toss();
-
-/* GET '/users/pages/taro' */
-frisby.create(
-    "異常系 '/users/pages/taro'引数が数値以外で404を返すか"
-  )
-  .get(HOST + MODEL + 'pages/taro')
-  .auth('api', 'api012')
-  .expectStatus(404)
-  .toss();
-
 /* GET '/users/' */
 frisby.create(
     "異常系 '/users/'でBASIC認証なしで401を返すか"
