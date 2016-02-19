@@ -42,7 +42,7 @@ $app->group('/users', function () {
 
     function saveMasterImage($data, $path)
     {
-        imagepng($data, $path, 0);
+        imagepng($data, $path, 9);
         chmod($path, 0755);
     };
 
