@@ -40,6 +40,34 @@ $app->group('/users', function () {
         }
     );
 
+    function saveMasterImage($data, $path)
+    {
+        imagepng($data, $path, 0);
+        chmod($path, 0755);
+    };
+
+    function saveThumbImage($data, $path)
+    {
+        $canvas = imagecreatetruecolor(200, 200);
+        imagecopyresampled(
+            $canvas,
+            $data,
+            0,
+            0,
+            0,
+            0,
+            200,
+            200,
+            677,
+            677
+        );
+
+        imagejpeg($canvas, $path, 50);
+        chmod($path, 0755);
+
+        imagedestroy($canvas);
+    }
+
     /**
      * POST
      */
@@ -52,8 +80,20 @@ $app->group('/users', function () {
         ) {
             $body = $request->getParsedBody();
 
+            $base64 = base64_decode($body['canvas']);
+            $image = imagecreatefromstring($base64);
+
+            $path = '../drawing/upload/';
+            $filename = date('Ymd_his');
+            $master = $path . $filename . '.png';
+            $thumb = $path . $filename . '_s.jpg';
+
+            saveMasterImage($image, $master);
+            saveThumbImage($image, $thumb);
+
             $db = $this->get('db.post');
 
+            /*
             $sql  = 'INSERT INTO `users` ';
 
             $fields = array_keys($body);
@@ -65,6 +105,7 @@ $app->group('/users', function () {
             $sql .= '(' . implode(', ', $holder) . ')';
 
             $db->execute($sql, $values);
+             */
 
             return $response->withJson(
                 $body,
