@@ -80,6 +80,7 @@ $app->group('/users', function () {
         ) {
             $body = $request->getParsedBody();
 
+            // img
             $base64 = base64_decode($body['canvas']);
             $image = imagecreatefromstring($base64);
 
@@ -91,6 +92,7 @@ $app->group('/users', function () {
             saveMasterImage($image, $master);
             saveThumbImage($image, $thumb);
 
+            // DB
             $db = $this->get('db.post');
 
             $sql  = 'INSERT INTO `users` ';
@@ -107,6 +109,28 @@ $app->group('/users', function () {
 
             $db->execute($sql, $values);
 
+            // mail
+            $mailer = $this->get('mailer');
+
+            $mail = $mailer->setTemplate(
+                'users.twig',
+                array(
+                    'name' => $body['name'],
+                    'date' => date('Y年m月d日 H時i分')
+                )
+            );
+
+            $mailer->setMessage(
+                '＼投稿がありました／ 夢の工作室（塗り絵）',
+                array('admin@yumenokousakusitsu.com' => 'システム自動通知'),
+                $mail
+            );
+
+            $res = $mailer->send(
+                'test@example.com'
+            );
+
+            // response
             return $response->withJson(
                 $body,
                 200,
