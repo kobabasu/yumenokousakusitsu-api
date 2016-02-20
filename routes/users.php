@@ -112,7 +112,7 @@ $app->group('/users', function () {
             // mail
             $mailer = $this->get('mailer');
 
-            $mail = $mailer->setTemplate(
+            $template = $mailer->setTemplate(
                 'users.twig',
                 array(
                     'name' => $body['name'],
@@ -124,6 +124,7 @@ $app->group('/users', function () {
                 array('admin@yumenokousakusitsu.com' => 'システム自動通知'),
                 $mail
                 '＼投稿がありました／ ぬりえであそぼ！',
+                $template
             );
 
             $res = $mailer->send(
