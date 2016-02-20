@@ -121,9 +121,9 @@ $app->group('/users', function () {
             );
 
             $mailer->setMessage(
-                '＼投稿がありました／ 夢の工作室（塗り絵）',
                 array('admin@yumenokousakusitsu.com' => 'システム自動通知'),
                 $mail
+                '＼投稿がありました／ ぬりえであそぼ！',
             );
 
             $res = $mailer->send(
