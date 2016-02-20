@@ -127,9 +127,7 @@ $app->group('/users', function () {
                 $template
             );
 
-            $res = $mailer->send(
-                'test@example.com'
-            );
+            $res = $mailer->send('info@example.com');
 
             // response
             return $response->withJson(
