@@ -120,10 +120,10 @@ $app->group('/users', function () {
                 )
             );
 
+            $from = $this->get('settings')['mail'];
             $mailer->setMessage(
-                array('admin@yumenokousakusitsu.com' => 'システム自動通知'),
-                $mail
                 '＼投稿がありました／ ぬりえであそぼ！',
+                array($from['from'] => $from['name']),
                 $template
             );
 
