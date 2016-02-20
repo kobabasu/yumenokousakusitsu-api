@@ -17,3 +17,7 @@ const MAIL_HOST     = '127.0.0.1';
 const MAIL_PORT     = '1025';
 const MAIL_USER     = null;
 const MAIL_PASS     = null;
+
+const MAIL_FROM     = 'info@example.com';
+const MAIL_NAME     = 'System Notification';
+const MAIL_ADDR     = 'admin@example.com';

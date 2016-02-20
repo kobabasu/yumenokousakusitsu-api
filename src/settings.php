@@ -38,7 +38,11 @@ return array(
             'host' => MAIL_HOST,
             'port' => MAIL_PORT,
             'user' => MAIL_USER,
-            'pass' => MAIL_PASS
+            'pass' => MAIL_PASS,
+
+            'from' => MAIL_FROM,
+            'name' => MAIL_NAME,
+            'addr' => MAIL_ADDR,
         ),
 
         'logger' => array(
