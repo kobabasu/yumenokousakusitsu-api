@@ -116,7 +116,8 @@ $app->group('/users', function () {
                 'users.twig',
                 array(
                     'name' => $body['name'],
-                    'date' => date('Y年m月d日 H時i分')
+                    'date' => date('n月d日H時i分'),
+                    'approved' => $body['approved']
                 )
             );
 
