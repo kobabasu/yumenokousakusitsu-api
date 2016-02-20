@@ -19,6 +19,6 @@ const MAIL_PORT     = '1025';
 const MAIL_USER     = null;
 const MAIL_PASS     = null;
 
-const MAIL_FROM     = 'info@example.com';
-const MAIL_NAME     = 'System Notification';
+const MAIL_FROM     = 'info@yumenokousakusitsu.com';
+const MAIL_NAME     = 'システム自動通知';
 const MAIL_ADDR     = 'admin@example.com';
