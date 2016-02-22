@@ -16,6 +16,10 @@
     <var name="MAIL_PORT" value="1025" />
     <var name="MAIL_USER" value="null" />
     <var name="MAIL_PASS" value="null" />
+
+    <var name="MAIL_FROM" value="info@example.com" />
+    <var name="MAIL_NAME" value="System Notification" />
+    <var name="MAIL_ADDR" value="admin@example.com" />
   </php>
 
   <testsuites>
