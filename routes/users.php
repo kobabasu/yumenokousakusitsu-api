@@ -40,34 +40,6 @@ $app->group('/users', function () {
         }
     );
 
-    function saveMasterImage($data, $path)
-    {
-        imagepng($data, $path, 9);
-        chmod($path, 0755);
-    };
-
-    function saveThumbImage($data, $path)
-    {
-        $canvas = imagecreatetruecolor(200, 200);
-        imagecopyresampled(
-            $canvas,
-            $data,
-            0,
-            0,
-            0,
-            0,
-            200,
-            200,
-            677,
-            677
-        );
-
-        imagejpeg($canvas, $path, 50);
-        chmod($path, 0755);
-
-        imagedestroy($canvas);
-    }
-
     /**
      * POST
      */
@@ -89,8 +61,29 @@ $app->group('/users', function () {
             $master = $path . $filename . '.png';
             $thumb = $path . $filename . '_s.jpg';
 
-            saveMasterImage($image, $master);
-            saveThumbImage($image, $thumb);
+            // save master
+            imagepng($image, $master, 9);
+            chmod($master, 0755);
+
+            // save thumb
+            $canvas = imagecreatetruecolor(200, 200);
+            imagecopyresampled(
+                $canvas,
+                $image,
+                0,
+                0,
+                0,
+                0,
+                200,
+                200,
+                677,
+                677
+            );
+
+            imagejpeg($canvas, $thumb, 50);
+            chmod($thumb, 0755);
+
+            imagedestroy($canvas);
 
             // DB
             $db = $this->get('db.post');

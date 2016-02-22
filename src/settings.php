@@ -14,7 +14,7 @@ return array(
         ),
 
         'basic_auth_path' => array(
-            '/users'
+            '/admin'
         )
     ),
 
