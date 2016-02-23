@@ -8,7 +8,7 @@
 namespace Routes;
 
 /**
- * Dbクラス用のテストファイル
+ * routes/users.phpのテストファイル
  *
  * @package Routes
  */
@@ -21,21 +21,35 @@ class UsersTest extends AppMock
     protected $filename = 'routes/users.php';
 
     /**
+     * @ignore
+     */
+    public static function tearDownAfterClass()
+    {
+        // for testUsersPostNormal
+        
+        foreach (glob('./*.jpg') as $val) {
+            unlink($val);
+        }
+    }
+
+    /**
      * 正常系 '/users/taro'のgetがIDが1のJSONを返すか
      *
      * @test testUsersNameGetNormal()
      */
     public function testUsersNameGetNormal()
     {
-        $app = $this->create($this->path . 'taro');
+        $app = $this->create($this->path . '1');
         require $this->filename;
         $resOut = $this->invoke($app);
 
         $expect = array(
             array(
                 'id' => '1',
-                'name' => 'taro',
-                'email' => 'taro@example.com'
+                'name' => 'ニックちゃん',
+                'approved' => '1',
+                'path' => '20160215-012544.png',
+                'posted' => '2016-02-15 01:25:44'
             )
         );
 
@@ -59,13 +73,17 @@ class UsersTest extends AppMock
         $expect = array(
             array(
                 'id' => '1',
-                'name' => 'taro',
-                'email' => 'taro@example.com'
+                'name' => 'ニックちゃん',
+                'approved' => '1',
+                'path' => '20160215-012544.png',
+                'posted' => '2016-02-15 01:25:44'
             ),
             array(
                 'id' => '2',
-                'name' => 'hanako',
-                'email' => 'hanako@example.com'
+                'name' => 'うさ子',
+                'approved' => '0',
+                'path' => '20160215-012544.png',
+                'posted' => '2016-02-15 01:25:44'
             )
         );
 
@@ -83,8 +101,33 @@ class UsersTest extends AppMock
     public function testUsersPostNormal()
     {
         $req = array(
-            'name' => 'ichiro',
-            'email' => 'ichiro@example.com'
+            'name' => 'モロッコくん',
+            'approved' => '1',
+            'canvas' => require 'tests/imgs/base64.php'
+        );
+        $this->setRequestBody(json_encode($req));
+
+        $app = $this->create($this->path, 'POST');
+        require $this->filename;
+        $resOut = $this->invoke($app);
+
+        $this->assertEquals(
+            json_encode($req),
+            (string)$resOut->getBody()
+        );
+    }
+
+    /**
+     * 正常系 '/users/'のpostが正しいJSONを返すか
+     *
+     * @test testUsersPostImageNormal()
+     */
+    public function testUsersPostImageNormal()
+    {
+        $req = array(
+            'name' => 'モロッコくん',
+            'approved' => '1',
+            'canvas' => require 'tests/imgs/base64.php'
         );
         $this->setRequestBody(json_encode($req));
 
@@ -106,8 +149,10 @@ class UsersTest extends AppMock
     public function testUsersPutNormal()
     {
         $req = array(
-            'name' => 'ichiro',
-            'email' => 'ichiro@example.com'
+                'name' => 'メキシコちゃん',
+                'approved' => '1',
+                'path' => '20160215-012544.png',
+                'posted' => '2016-02-15 01:25:44'
         );
         $this->setRequestBody(json_encode($req));
 

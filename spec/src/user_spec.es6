@@ -8,7 +8,6 @@ frisby.create(
     "正常系 '/users/'で正しくJSONを返すか"
   )
   .get(HOST + MODEL)
-  .auth('api', 'api012')
   .expectStatus(200)
   .expectHeader(
     'Content-Type',
@@ -17,13 +16,17 @@ frisby.create(
   .expectJSON([
     {
       id: '1',
-      name: 'taro',
-      email: 'taro@example.com'
+      name: 'ニックちゃん',
+      approved: '1',
+      path: '20160215_012544',
+      posted: '2016-02-15 01:25:44'
     },
     {
       id: '2',
-      name: String,
-      email: String
+      name: 'うさ子',
+      approved: '0',
+      path: '20160215_012544',
+      posted: '2016-02-15 01:25:44'
     }
   ])
   .toss();
@@ -33,8 +36,6 @@ frisby.create(
     "異常系 '/users/'でBASIC認証なしで401を返すか"
   )
   .get(HOST + MODEL)
-  .auth('api', 'api0123')
-  .expectStatus(401)
   .expectHeader(
     'Content-Type',
     'application/json;charset=utf-8'

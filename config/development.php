@@ -18,3 +18,7 @@ const MAIL_HOST     = '127.0.0.1';
 const MAIL_PORT     = '1025';
 const MAIL_USER     = null;
 const MAIL_PASS     = null;
+
+const MAIL_FROM     = 'info@yumenokousakusitsu.com';
+const MAIL_NAME     = 'システム自動通知';
+const MAIL_ADDR     = 'admin@example.com';

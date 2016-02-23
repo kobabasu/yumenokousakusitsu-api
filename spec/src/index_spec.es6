@@ -11,6 +11,6 @@ frisby.create(
   .expectStatus(200)
   .expectHeader(
     'Content-Type',
-    'text/html;charset=utf-8'
+    'text/html'
   )
   .toss();
