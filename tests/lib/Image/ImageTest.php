@@ -545,6 +545,23 @@ class ImageTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * 正常系 圧縮率が0でpngが保存されるか
+     *
+     * @covers Lib\Image\Image::save()
+     * @test testSavePngCompress0Normal()
+     */
+    public function testSavePng0CompressNormal()
+    {
+        $this->object->source('tests/imgs/test.png');
+        $this->object->setFilename('test');
+        $this->object->setCompress(0);
+        $this->object->setImageType('png');
+        $this->object->save();
+
+        $this->assertFileExists('./test_s.png');
+    }
+
+    /**
      * 正常系 pngが保存されるか
      *
      * @covers Lib\Image\Image::save()

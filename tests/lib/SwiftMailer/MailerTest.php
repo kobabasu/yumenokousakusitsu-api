@@ -115,6 +115,27 @@ class MailerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * 正常系 添付ファイルを添付してもメッセージも返すか
+     *
+     * @covers Lib\SwiftMailer\Mailer::setAttachment()
+     * @test testSetAttachmentNormal()
+     */
+    public function testSetAttachmentNormal()
+    {
+        $class = new \ReflectionClass($this->object);
+        $ref = $class->getProperty('attach');
+        $ref->setAccessible(true);
+        $this->object->setAttachment(
+            'tests/imgs/test.jpg',
+            'image/jpeg'
+        );
+        $res = $ref->getValue($this->object);
+
+
+        $this->assertInternalType('object', $res);
+    }
+
+    /**
      * 正常系 メッセージを返すか
      *
      * @covers Lib\SwiftMailer\Mailer::send()
@@ -131,6 +152,39 @@ class MailerTest extends \PHPUnit_Framework_TestCase
         $this->object->setName($GLOBALS['MAIL_NAME']);
         $this->object->setMessage(
             'タイトル',
+            $body
+        );
+
+        $res = $this->object->send(
+            'test@example.com'
+        );
+
+        $this->assertEquals(1, $res);
+    }
+
+    /**
+     * 正常系 添付画像を含むメッセージを返すか
+     *
+     * @covers Lib\SwiftMailer\Mailer::send()
+     * @test testSetSendAttachmentNormal()
+     */
+    public function testSendAttachmentNormal()
+    {
+        $body = $this->object->setTemplate(
+            'defaultTest.twig',
+            array('name' => '太郎')
+        );
+
+        $this->object->setAttachment(
+            'tests/imgs/test.jpg',
+            'image/jpeg',
+            'test'
+        );
+
+        $this->object->setFrom($GLOBALS['MAIL_FROM']);
+        $this->object->setName($GLOBALS['MAIL_NAME']);
+        $this->object->setMessage(
+            '添付画像テスト',
             $body
         );
 
