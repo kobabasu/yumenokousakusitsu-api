@@ -69,6 +69,8 @@ class Thumbnail extends Image
             imagesx($this->image),
             imagesy($this->image)
         );
+
+        $this->image = $this->canvas;
     }
 
     /**
