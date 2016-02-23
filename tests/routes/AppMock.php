@@ -21,6 +21,12 @@ use \Lib\Db\Post;
 use \Lib\Db\Put;
 use \Lib\Db\Delete;
 
+use \Lib\SwiftMailer\Init;
+use \Lib\SwiftMailer\Mailer;
+
+use \Lib\Image\Original;
+use \Lib\Image\Thumbnail;
+
 /**
  * Slimの拡張
  *
@@ -203,6 +209,44 @@ class AppMock extends \PHPUnit_Extensions_Database_TestCase
             $obj->setDebug(true);
 
             return $obj;
+        };
+
+        $container['mailer'] = function ($c) {
+            $transport = new Init(
+                $GLOBALS['MAIL_HOST'],
+                $GLOBALS['MAIL_PORT'],
+                $GLOBALS['MAIL_USER'],
+                $GLOBALS['MAIL_PASS']
+            );
+
+            $mailer = new Mailer($transport);
+            $mailer->setFrom($GLOBALS['MAIL_FROM']);
+            $mailer->setName($GLOBALS['MAIL_NAME']);
+
+            return $mailer;
+        };
+
+        $container['image.original'] = function ($c) {
+            $original = new Original();
+            $original->setDestination = './';
+            $original->setFilename = 'test';
+            $original->setCompress = 0;
+            $original->setImageType = 'png';
+
+            return $original;
+        };
+
+        $container['image.thumbnail'] = function ($c) {
+            $thumbnail = new Thumbnail();
+            $thumbnail->setDestination = './';
+            $thumbnail->setFilename = 'test';
+            $thumbnail->setPostfix = '_s';
+            $thumbnail->setCompress = 70;
+            $thumbnail->setWidth = '200';
+            $thumbnail->setHeight = '200';
+            $thumbnail->setImageType = 'jpg';
+
+            return $thumbnail;
         };
     }
 }
