@@ -12,6 +12,9 @@ use \Lib\Db\Delete;
 use \Lib\SwiftMailer\Init;
 use \Lib\SwiftMailer\Mailer;
 
+use \Lib\Image\Original;
+use \Lib\Image\Thumbnail;
+
 /**
  * DIC configuration
  */
@@ -105,7 +108,34 @@ $container['mailer'] = function ($c) {
         $settings['pass']
     );
 
-    return new Mailer(
-        $transport
-    );
+    $mailer = new Mailer($transport);
+    $mailer->setFrom($settings['from']);
+    $mailer->setName($settings['name']);
+
+    return $mailer;
+};
+
+
+/**
+ * Image
+ */
+$container['image.original'] = function ($c) {
+    $original = new Original();
+    $original->setDestination = '../drawing/upload/';
+    $original->setCompress = 0;
+    $original->setImageType = 'png';
+
+    return $original;
+};
+
+$container['image.thumbnail'] = function ($c) {
+    $thumbnail = new Thumbnail();
+    $thumbnail->setDestination = '../drawing/upload/';
+    $thumbnail->setPostfix = '_s';
+    $thumbnail->setCompress = 70;
+    $thumbnail->setWidth = '200';
+    $thumbnail->setHeight = '200';
+    $thumbnail->setImageType = 'jpg';
+
+    return $thumbnail;
 };
