@@ -98,7 +98,8 @@ $app->group('/users', function () {
                 $template
             );
 
-            $res = $mailer->send('info@example.com');
+            $addr = $this->get('settings')['mail']['addr'];
+            $res = $mailer->send($addr);
 
             // response
             return $response->withJson(
