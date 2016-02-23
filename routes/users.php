@@ -93,6 +93,12 @@ $app->group('/users', function () {
                 )
             );
 
+            $mailer->setAttachment(
+                '../upload/' . $filename . '_s.jpg',
+                'image/jpeg',
+                $body['name'] . '.jpg'
+            );
+
             $mailer->setMessage(
                 '＼投稿がありました／ ぬりえであそぼ！',
                 $template
