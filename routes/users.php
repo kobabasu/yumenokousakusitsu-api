@@ -51,39 +51,18 @@ $app->group('/users', function () {
             $args
         ) {
             $body = $request->getParsedBody();
-
-            // img
-            $base64 = base64_decode($body['canvas']);
-            $image = imagecreatefromstring($base64);
-
-            $path = '../drawing/upload/';
+                
             $filename = date('Ymd_His');
-            $master = $path . $filename . '.png';
-            $thumb = $path . $filename . '_s.jpg';
 
-            // save master
-            imagepng($image, $master, 9);
-            chmod($master, 0755);
+            $original = $this->get('image.original');
+            $original->source($body['canvas']);
+            $original->setFilename($filename);
+            $original->save();
 
-            // save thumb
-            $canvas = imagecreatetruecolor(200, 200);
-            imagecopyresampled(
-                $canvas,
-                $image,
-                0,
-                0,
-                0,
-                0,
-                200,
-                200,
-                677,
-                677
-            );
-
-            imagejpeg($canvas, $thumb, 50);
-            chmod($thumb, 0755);
-
-            imagedestroy($canvas);
+            $thumbnail = $this->get('image.thumbnail');
+            $thumbnail->source($body['canvas']);
+            $thumbnail->setFilename($filename);
+            $thumbnail->save();
 
             // DB
             $db = $this->get('db.post');
@@ -114,10 +93,8 @@ $app->group('/users', function () {
                 )
             );
 
-            $from = $this->get('settings')['mail'];
             $mailer->setMessage(
                 '＼投稿がありました／ ぬりえであそぼ！',
-                array($from['from'] => $from['name']),
                 $template
             );
 
