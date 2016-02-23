@@ -112,6 +112,12 @@ $container['db.delete'] = function ($c) {
  *   array('name' => 'taro')
  * );
  *
+ * $mailer->setAttachment(
+ *     '../upload/' . $filename . '_s.jpg',
+ *     'image/jpeg',
+ *     $body['name'] . '.jpg'
+ * );
+ *
  * $mailer->setMessage('title',$template);
  * $res = $mailer->send('info@test.com');
  */

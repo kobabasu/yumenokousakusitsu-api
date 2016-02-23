@@ -24,8 +24,11 @@ class Mailer
     /** @var String $form 送り主のアドレス */
     private $from;
 
-    /** @var String #name 送り主の名前 */
+    /** @var String $name 送り主の名前 */
     private $name;
+
+    /** @var Object $attach 添付画像 */
+    private $attach = null;
 
     /**
      * Swiftオブジェクトを代入
@@ -100,6 +103,30 @@ class Mailer
     }
 
     /**
+     * 添付ファイルを設定
+     *
+     * @param String $path
+     * @return void
+     */
+    public function setAttachment(
+        $path,
+        $contentType = 'image/jpeg',
+        $filename = null
+    ) {
+        $attach = \Swift_Attachment::fromPath($path);
+
+        if ($contentType) {
+            $attach->setContentType($contentType);
+        }
+
+        if ($filename) {
+            $attach->setFilename($filename);
+        }
+
+        $this->attach = $attach;
+    }
+
+    /**
      * 実際に送る
      *
      * @param Array $to
@@ -109,6 +136,11 @@ class Mailer
     {
         $mailer = $this->swift->getMailer();
         $this->message->setTo((Array)$to);
+
+        if ($this->attach) {
+            $this->message->attach($this->attach);
+        }
+
         $res = $mailer->send($this->message);
 
         return $res;
