@@ -8,7 +8,7 @@
 namespace Routes;
 
 /**
- * Dbクラス用のテストファイル
+ * routes/users.phpのテストファイル
  *
  * @package Routes
  */
@@ -19,6 +19,18 @@ class UsersTest extends AppMock
 
     /** @var String $filename 対象ファイル */
     protected $filename = 'routes/users.php';
+
+    /**
+     * @ignore
+     */
+    public static function tearDownAfterClass()
+    {
+        // for testUsersPostNormal
+        
+        foreach (glob('./*.jpg') as $val) {
+            unlink($val);
+        }
+    }
 
     /**
      * 正常系 '/users/taro'のgetがIDが1のJSONを返すか
@@ -82,140 +94,6 @@ class UsersTest extends AppMock
     }
 
     /**
-     * 正常系 '/users/pages/'が1ページ目を返すか
-     *
-     * @test testPagesGetNormal()
-     */
-    public function testPagesGetNormal()
-    {
-        $app = $this->create($this->path . 'pages/');
-        require $this->filename;
-        $resOut = $this->invoke($app);
-
-        $expect = array(
-            'pages' => array(
-                array(
-                    'id' => '1',
-                    'name' => 'ニックちゃん',
-                    'approved' => '1',
-                    'path' => '20160215-012544.png',
-                    'posted' => '2016-02-15 01:25:44'
-                )
-            ),
-            'limit' => 15,
-            'total' => 1
-        );
-
-        $this->assertEquals(
-            json_encode($expect),
-            (string)$resOut->getBody()
-        );
-    }
-
-    /**
-     * 正常系 '/users/pages/0'が1ページ目を返すか
-     *
-     * @test testPagesZeroGetNormal()
-     */
-    public function testPagesZeroGetNormal()
-    {
-        $app = $this->create($this->path . 'pages/0');
-        require $this->filename;
-        $resOut = $this->invoke($app);
-
-        $expect = array(
-            'pages' => array(
-                array(
-                    'id' => '1',
-                    'name' => 'ニックちゃん',
-                    'approved' => '1',
-                    'path' => '20160215-012544.png',
-                    'posted' => '2016-02-15 01:25:44'
-                )
-            ),
-            'limit' => 15,
-            'total' => 1
-        );
-
-        $this->assertEquals(
-            json_encode($expect),
-            (string)$resOut->getBody()
-        );
-    }
-
-    /**
-     * 正常系 '/users/pages/1'が1ページ目を返すか
-     *
-     * @test testPagesOneGetNormal()
-     */
-    public function testPagesOneGetNormal()
-    {
-        $app = $this->create($this->path . 'pages/1');
-        require $this->filename;
-        $resOut = $this->invoke($app);
-
-        $expect = array(
-            'pages' => array(
-                array(
-                    'id' => '1',
-                    'name' => 'ニックちゃん',
-                    'approved' => '1',
-                    'path' => '20160215-012544.png',
-                    'posted' => '2016-02-15 01:25:44'
-                )
-            ),
-            'limit' => 15,
-            'total' => 1
-        );
-
-        $this->assertEquals(
-            json_encode($expect),
-            (string)$resOut->getBody()
-        );
-    }
-
-    /**
-     * 正常系 '/users/pages/2'が空を返すか
-     *
-     * @test testPagesTwoGetNormal()
-     */
-    public function testPagesTwoGetNormal()
-    {
-        $app = $this->create($this->path . 'pages/2');
-        require $this->filename;
-        $resOut = $this->invoke($app);
-
-        $expect = array(
-            'pages' => array(
-            ),
-            'limit' => 15,
-            'total' => 1
-        );
-
-        $this->assertEquals(
-            json_encode($expect),
-            (string)$resOut->getBody()
-        );
-    }
-
-    /**
-     * 正常系 '/users/pages/taro' 数値以外を与えて404を返すか
-     *
-     * @test testPagesStringGetNormal()
-     */
-    public function testPagesStringGetNormal()
-    {
-        $app = $this->create($this->path . 'pages/taro');
-        require $this->filename;
-        $resOut = $this->invoke($app);
-
-        $this->assertEquals(
-            '404',
-            $resOut->getStatusCode()
-        );
-    }
-
-    /**
      * 正常系 '/users/'のpostが正しいJSONを返すか
      *
      * @test testUsersPostNormal()
@@ -225,8 +103,31 @@ class UsersTest extends AppMock
         $req = array(
             'name' => 'モロッコくん',
             'approved' => '1',
-            'path' => '20160215-012544.png',
-            'posted' => '2016-02-15 01:25:44'
+            'canvas' => require 'tests/imgs/base64.php'
+        );
+        $this->setRequestBody(json_encode($req));
+
+        $app = $this->create($this->path, 'POST');
+        require $this->filename;
+        $resOut = $this->invoke($app);
+
+        $this->assertEquals(
+            json_encode($req),
+            (string)$resOut->getBody()
+        );
+    }
+
+    /**
+     * 正常系 '/users/'のpostが正しいJSONを返すか
+     *
+     * @test testUsersPostImageNormal()
+     */
+    public function testUsersPostImageNormal()
+    {
+        $req = array(
+            'name' => 'モロッコくん',
+            'approved' => '1',
+            'canvas' => require 'tests/imgs/base64.php'
         );
         $this->setRequestBody(json_encode($req));
 

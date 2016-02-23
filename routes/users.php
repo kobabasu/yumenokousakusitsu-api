@@ -40,48 +40,6 @@ $app->group('/users', function () {
         }
     );
 
-    /** /users/pages/ */
-    $this->get(
-        '/pages/{page:[0-9]*}',
-        function (
-            $request,
-            $response,
-            $args
-        ) {
-            $db = $this->get('db.get');
-
-            $page = 1;
-            if ($args['page'] > 0) {
-                $page = $args['page'];
-            }
-
-            $limit = 15;
-            $offset = $limit * ($page - 1);
-
-            $sql = 'SELECT * FROM `users` ';
-            $sql .= 'WHERE `approved` = 1 ';
-            $sql .= 'ORDER BY `posted` DESC LIMIT ';
-            $sql .= (int)$offset . ', ' . (int)$limit . ';';
-            $pages = $db->execute($sql);
-
-            $sql = 'SELECT COUNT(*) AS `total` FROM `users` ';
-            $sql .= 'WHERE `approved` = 1;';
-            $total = $db->execute($sql);
-
-            $body = array(
-                'pages' => $pages,
-                'limit' => (int)$limit,
-                'total' => (int)array_shift($total)->total
-            );
-
-            return $response->withJson(
-                $body,
-                200,
-                $this->get('settings')['withJsonEnc']
-            );
-        }
-    );
-
     /**
      * POST
      */
@@ -93,21 +51,56 @@ $app->group('/users', function () {
             $args
         ) {
             $body = $request->getParsedBody();
+                
+            $filename = date('Ymd_His');
 
+            $original = $this->get('image.original');
+            $original->source($body['canvas']);
+            $original->setFilename($filename);
+            $original->save();
+
+            $thumbnail = $this->get('image.thumbnail');
+            $thumbnail->source($body['canvas']);
+            $thumbnail->setFilename($filename);
+            $thumbnail->save();
+
+            // DB
             $db = $this->get('db.post');
 
             $sql  = 'INSERT INTO `users` ';
+            $sql .= '(`name`, `approved`, `path`, `posted`) ';
+            $sql .= 'VALUES ';
+            $sql .= '(?, ?, ?, ?);';
 
-            $fields = array_keys($body);
-            $values = array_values($body);
-            $holder = array_fill(0, count($values), '?');
-
-            $sql .= '(' . implode(', ', $fields) . ')';
-            $sql .= ' VALUES ';
-            $sql .= '(' . implode(', ', $holder) . ')';
+            $values = array(
+                $body['name'],
+                $body['approved'],
+                $filename,
+                date('Y-m-d H:i:s')
+            );
 
             $db->execute($sql, $values);
 
+            // mail
+            $mailer = $this->get('mailer');
+
+            $template = $mailer->setTemplate(
+                'users.twig',
+                array(
+                    'name' => $body['name'],
+                    'date' => date('n月d日H時i分'),
+                    'approved' => $body['approved']
+                )
+            );
+
+            $mailer->setMessage(
+                '＼投稿がありました／ ぬりえであそぼ！',
+                $template
+            );
+
+            $res = $mailer->send('info@example.com');
+
+            // response
             return $response->withJson(
                 $body,
                 200,

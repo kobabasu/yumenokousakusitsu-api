@@ -12,6 +12,9 @@ use \Lib\Db\Delete;
 use \Lib\SwiftMailer\Init;
 use \Lib\SwiftMailer\Mailer;
 
+use \Lib\Image\Original;
+use \Lib\Image\Thumbnail;
+
 /**
  * DIC configuration
  */
@@ -37,6 +40,12 @@ $container['logger'] = function ($c) {
 
 /**
  * Database
+ *
+ * [ e.g. ]
+ * $db =$this->get('db.get');
+ * $sql = 'SELECT * FROM `users` WHERE `id` = ?;';
+ * $values = array(1);
+ * $res = $db->execute($sql, $values);
  */
 $container['db.pdo'] = function ($c) {
     $settings = $c->get('settings')['db'];
@@ -94,6 +103,17 @@ $container['db.delete'] = function ($c) {
 
 /**
  * Swift Mailer
+ *
+ * [ e.g. ]
+ * $mailer = $this->get('mailer');
+ *
+ * $tempate = $mailer('mailer');
+ *   'users.twig',
+ *   array('name' => 'taro')
+ * );
+ *
+ * $mailer->setMessage('title',$template);
+ * $res = $mailer->send('info@test.com');
  */
 $container['mailer'] = function ($c) {
     $settings = $c->get('settings')['mail'];
@@ -105,7 +125,42 @@ $container['mailer'] = function ($c) {
         $settings['pass']
     );
 
-    return new Mailer(
-        $transport
-    );
+    $mailer = new Mailer($transport);
+    $mailer->setFrom($settings['from']);
+    $mailer->setName($settings['name']);
+
+    return $mailer;
+};
+
+
+/**
+ * Image
+ *
+ * [ e.g. ]
+ * $fliename = date('Ymd_His');
+ * // ファイル名に秒を含めるとずれるためここで確定
+ * $original = $this->get('image.original');
+ * $original->source($body['canvas']);
+ * $original->setFilename($filename);
+ * $original->save()
+ */
+$container['image.original'] = function ($c) {
+    $original = new Original();
+    $original->setDestination('../upload/');
+    $original->setCompress(100);
+    $original->setImageType('png');
+
+    return $original;
+};
+
+$container['image.thumbnail'] = function ($c) {
+    $thumbnail = new Thumbnail();
+    $thumbnail->setDestination('../upload/');
+    $thumbnail->setPostfix('_s');
+    $thumbnail->setCompress(70);
+    $thumbnail->setWidth(200);
+    $thumbnail->setHeight(200);
+    $thumbnail->setImageType('jpg');
+
+    return $thumbnail;
 };
