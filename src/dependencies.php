@@ -146,7 +146,7 @@ $container['mailer'] = function ($c) {
  */
 $container['image.original'] = function ($c) {
     $original = new Original();
-    $original->setDestination('../../upload/');
+    $original->setDestination('../upload/');
     $original->setCompress(100);
     $original->setImageType('png');
 
@@ -155,7 +155,7 @@ $container['image.original'] = function ($c) {
 
 $container['image.thumbnail'] = function ($c) {
     $thumbnail = new Thumbnail();
-    $thumbnail->setDestination('../../upload/');
+    $thumbnail->setDestination('../upload/');
     $thumbnail->setPostfix('_s');
     $thumbnail->setCompress(70);
     $thumbnail->setWidth(200);
