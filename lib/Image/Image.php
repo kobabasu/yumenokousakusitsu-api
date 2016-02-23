@@ -197,7 +197,7 @@ abstract class Image
                     break;
                 case 'png':
                     $compress = 10 - $this->compress;
-                    if ($this->compress == 10) {
+                    if ($compress == 10) {
                         $compress = 9;
                     }
                     imagepng(
