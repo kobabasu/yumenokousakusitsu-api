@@ -21,6 +21,18 @@ class UsersTest extends AppMock
     protected $filename = 'routes/users.php';
 
     /**
+     * @ignore
+     */
+    public static function tearDownAfterClass()
+    {
+        // for testUsersPostNormal
+        
+        foreach (glob('./*.jpg') as $val) {
+            unlink($val);
+        }
+    }
+
+    /**
      * 正常系 '/users/taro'のgetがIDが1のJSONを返すか
      *
      * @test testUsersNameGetNormal()
@@ -91,8 +103,31 @@ class UsersTest extends AppMock
         $req = array(
             'name' => 'モロッコくん',
             'approved' => '1',
-            'path' => '20160215-012544.png',
-            'posted' => '2016-02-15 01:25:44'
+            'canvas' => require 'tests/imgs/base64.php'
+        );
+        $this->setRequestBody(json_encode($req));
+
+        $app = $this->create($this->path, 'POST');
+        require $this->filename;
+        $resOut = $this->invoke($app);
+
+        $this->assertEquals(
+            json_encode($req),
+            (string)$resOut->getBody()
+        );
+    }
+
+    /**
+     * 正常系 '/users/'のpostが正しいJSONを返すか
+     *
+     * @test testUsersPostImageNormal()
+     */
+    public function testUsersPostImageNormal()
+    {
+        $req = array(
+            'name' => 'モロッコくん',
+            'approved' => '1',
+            'canvas' => require 'tests/imgs/base64.php'
         );
         $this->setRequestBody(json_encode($req));
 
