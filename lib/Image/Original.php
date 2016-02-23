@@ -14,6 +14,9 @@ namespace Lib\Image;
  */
 class Original extends Image
 {
+    /** @var String $postfix ファイル名接尾辞 */
+    protected $postfix = '';
+
     /**
      * なにもせずそのまま保存
      *
