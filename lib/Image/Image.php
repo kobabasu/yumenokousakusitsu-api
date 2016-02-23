@@ -196,7 +196,7 @@ abstract class Image
                     chmod($path, 0755);
                     break;
                 case 'png':
-                    $compress = $this->compress;
+                    $compress = 10 - $this->compress;
                     if ($this->compress == 10) {
                         $compress = 9;
                     }
